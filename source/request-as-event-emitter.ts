@@ -240,6 +240,9 @@ export default (options: NormalizedOptions): RequestAsEventEmitter => {
 		} else {
 			// Catches errors thrown by calling `requestFn(…)`
 			try {
+				if (httpOptions[requestSymbol].__agent_base_https_request_patched__) {
+					throw new Error("got v10 is incompatible with agent-base v4. Please upgrade all agent-base dependencies to v5");
+				}
 				handleRequest(httpOptions[requestSymbol](options.url, httpOptions, handleResponse));
 			} catch (error) {
 				emitError(new RequestError(error, options));
